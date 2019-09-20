@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Title:      PGBlitz (Reference Title File)
-# Author(s):  Admin9705
+# Author(s):  Friday Next
 # URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
@@ -41,11 +41,18 @@ main = "{{domain.stdout}}"
 [[acme.domains]]
 main = "*.{{domain.stdout}}"
 
+[file]
 [backends]
 ## Cockpit Backend
 [backends.cockpit]
 [backends.cockpit.servers.server]
 url = "https://127.0.0.1:9090"
+
+[backends.backend-homeassistant]
+  [backends.backend-homeassistant.servers]
+    [backends.backend-homeassistant.servers.server-homeassistant-ext]
+      url = "http:/192.168.3.208:8123"
+        weight = 0
 
 [frontends]
 ## Cockpit Frontend
@@ -55,25 +62,16 @@ passHostHeader = true
 [frontends.cockpit.routes.cockpit]
 rule = "Host:cockpit.{{domain.stdout}}"
 
+[frontends.frontend-homeassistant]
+    backend = "backend-homeassistant"
+    passHostHeader = true
+    [frontends.frontend-homeassistant.routes]
+      [frontends.frontend-homeassistant.routes.route-homeassistant-ext]
+      rule = "Host:hass.tvwithnowires.live"
+
 [docker]
 endpoint = "unix:///var/run/docker.sock"
 domain = "{{domain.stdout}}"
 watch = true
 exposedbydefault = false
 network = "plexguide"
-
-[file]
-[backends]
-  [backends.backend-homeassistant]
-    [backends.backend-homeassistant.servers]
-      [backends.backend-homeassistant.servers.server-homeassistant-ext]
-        url = "http:/192.168.3.208:8123"
-        weight = 0
-
-[frontends]
-  [frontends.frontend-homeassistant]
-    backend = "backend-homeassistant"
-    passHostHeader = true
-    [frontends.frontend-homeassistant.routes]
-      [frontends.frontend-homeassistant.routes.route-homeassistant-ext]
-      rule = "Host:hass.tvwithnowires.live"
