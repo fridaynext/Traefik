@@ -51,7 +51,7 @@ url = "https://127.0.0.1:9090"
 [backends.backend-homeassistant]
   [backends.backend-homeassistant.servers]
     [backends.backend-homeassistant.servers.server-homeassistant-ext]
-      url = "http:/192.168.3.208:8123"
+      url = "http://192.168.3.208:8123"
         weight = 0
 
 [frontends]
@@ -61,13 +61,6 @@ backend = "cockpit"
 passHostHeader = true
 [frontends.cockpit.routes.cockpit]
 rule = "Host:cockpit.{{domain.stdout}}"
-
-[frontends.frontend-homeassistant]
-    backend = "backend-homeassistant"
-    passHostHeader = true
-    [frontends.frontend-homeassistant.routes]
-      [frontends.frontend-homeassistant.routes.route-homeassistant-ext]
-      rule = "Host:hass.tvwithnowires.live"
 
 [docker]
 endpoint = "unix:///var/run/docker.sock"
